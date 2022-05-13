@@ -1,5 +1,5 @@
 # PsychApp---An-App-that-makes-you-mentally-prepared-
-Video demo link - 
+Video demo link - https://youtu.be/s6LRSIduJbU
 
 Webapp urls-
 (Note: this link expires after some duration due to azure pricing, so it may or may not work.)
