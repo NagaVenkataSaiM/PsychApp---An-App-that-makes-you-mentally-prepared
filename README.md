@@ -17,3 +17,9 @@ Azure services used:
 
 Rading image trough webcam using javascript-
 https://www.studytonight.com/post/capture-photo-using-webcam-in-javascript
+
+Future implementation-
+1) using open source open cv instead of azure face api 
+2) Using heroku to host app and database
+
+The above future implementation are public purpose to keep project free and working.
