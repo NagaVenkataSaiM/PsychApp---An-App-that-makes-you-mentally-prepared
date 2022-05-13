@@ -1,6 +1,10 @@
 # PsychApp---An-App-that-makes-you-mentally-prepared-
 Video demo link - 
 
+Webapp urls-
+(Note: this link expires after some duration due to azure pricing, so it may or may not work.)
+https://psychapp.azurewebsites.net/
+
 problem statement:
 In todays world cloud storage has become part of life.
 This app can be used to store photos in cloud storage securely .Also this app analysis every photo uploaded by you and keep track of your mood.
