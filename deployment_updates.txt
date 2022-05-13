@@ -1,0 +1,4 @@
+may 12
+1-> Char (100) too long userphotos model to text field
+2-> file upload too large (request)
+3-> user name+blob name

@@ -1,0 +1,74 @@
+<!doctype html>
+
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_variables.scss">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_bootswatch.scss">
+
+    <style type="text/css">
+      .collapse
+        display: block;
+      }
+      .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+        rows: 100px 4;
+    }
+    .btnx{
+      width: 150px;
+      height: 50px;
+    }
+    .form-inline {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 5vw);
+    grid-gap: 150px;
+}
+    </style>
+    <title>All phtotos</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/dashboard">Dashboard</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+               
+        <li class="nav-item">
+           <a class="nav-link active" href="/logout">Logout
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+    </div>
+    <button class="btn btn-primary" onclick="window.location.href='/allphotos'" >View photos</button>
+  </div>
+</nav>
+<br>
+<br>
+<div class="gallery">
+  {% for img in event_d %}
+  {% ifequal request.session.email img.email %}
+  <div>
+  <form method="POST" class="form-inline">
+    {% csrf_token %}
+    <input type="hidden" value="{{img.url}}" name="viewphoto"></input>
+    <img src="{{img.url}}" width="150px" height="150px"></img>
+    <br>
+    <button type="submit" class="btnx btn btn-primary">View photo</button>
+  </form>
+  </div>
+  {% endifequal %}
+  {% endfor %}
+</div>

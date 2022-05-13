@@ -1,0 +1,97 @@
+<!doctype html>
+
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_variables.scss">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_bootswatch.scss">
+
+    <style type="text/css">
+      .collapse
+        display: block;
+      }
+    </style>
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/takeattendence">Take Attendence</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+                
+        <li class="nav-item">
+           <a class="nav-link active" href="/logout">Logout
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+    </div>
+     <button class="btn btn-primary" onclick="window.location.href='/allphotos'" >View photos</button>
+ <button class="btn btn-primary" onclick="myFunction();">Upload photo</button>
+  </div>
+</nav>
+<div>
+    <center>
+    <h1>
+        Mood Analysis
+        <div class="modal" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload image</h5>
+        <button type="button" onclick="myFunction2();" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="file" id="fileupload" class="in-p form-control" accept="image/x-png,image/jpeg,image/jpg" onChange="onFileChange();" />
+            <input type="hidden" id="imagedata" name="imagedata"></input>
+            <input type="hidden" id="imagename" name="imagename"></input>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="myFunction2();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+     function myFunction() {
+    document.getElementById('modal').style.cssText = 'display:block';
+}
+ function myFunction2() {
+    document.getElementById('modal').style.cssText = 'display:none';
+}
+function onFileChange(){
+    var x=document.getElementById('fileupload');
+    var fReader = new FileReader();
+    fReader.readAsDataURL(x.files[0]);
+    fReader.onloadend=function(event){
+         data=event.target.result;
+         console.log(data)
+         document.getElementById('imagedata').value=data;
+         document.getElementById('imagename').value=x.files[0].name;
+    }
+}
+ </script>
+    </h1>
+    <br>
+    <br>
+    <br>
+    <img src="data:image/png;base64,{{data1}}" alt="" height="600" ,width="600">
+    </center>
+</div>
+<script src="https://bootswatch.com/5/darkly/bootstrap.min.css"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+<script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

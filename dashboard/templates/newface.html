@@ -1,0 +1,208 @@
+<!doctype html>
+
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_variables.scss">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://psychoapp.blob.core.windows.net/mycontainer/_bootswatch.scss">
+
+    <style>
+    /* CSS comes here */
+    #video {
+        border: 1px solid black;
+        width: 500px;
+        height: 500px;
+    }
+
+    #photo {
+        border: 1px solid black;
+        width: 500px;
+        height: 500px;
+    }
+
+    #canvas {
+        display: none;
+    }
+
+    .camera {
+        position: relative;
+        width: 500px;
+        display: inline-block;
+        left: 20%;
+    }
+
+    .output {
+        width: 500px;
+        display: inline-block;
+    }
+
+    #startbutton {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 0px;
+        padding: 5px;
+        background-color: #6a67ce;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 1.0);
+        cursor: pointer;
+    }
+    .sbtn {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 0px;
+        padding: 5px;
+        background-color: #6a67ce;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 1.0);
+        cursor: pointer;
+    }
+
+    .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+       columns: 100px 2;
+    }
+    .in-p{
+        width: 50%;
+    }
+    @media only screen and (max-width: 768px) {
+        .camera {
+        position: relative;
+        width: 500px;
+        display: inline-block;
+        left: 0%;
+    }
+  .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+       columns: 100px 1;
+    }
+}
+    </style>
+    <title>New Face</title>
+</head>
+
+<body>
+    <br>
+    <br>
+    <center>
+     <h1>
+          Make sure your face is visible clearly,than click take photo and submit!
+        </h1>
+    </center>
+    <br>
+    <br>
+    <div class="contentarea">
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
+        </div>
+        <div><button id="startbutton" class="btn btn-primary">Take photo</button>
+        <canvas id="canvas"></canvas>
+        <div class="output">
+            <img id="photo" name="photo" alt="The screen capture will appear in this box.">
+        </div>
+       <form method="POST">
+        {% csrf_token %}
+           <input type="hidden" id="photodata" name="photodata" value=""></input>
+           <input type="submit" name="Downloadimage" class="btn btn-primary"></input>
+       </form>
+    </div>
+
+    <script>
+    /* JS comes here */
+    (function() {
+
+        var width = 500; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
+
+        var streaming = false;
+
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+
+        function startup() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            photo = document.getElementById('photo');
+            startbutton = document.getElementById('startbutton');
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            video.addEventListener('canplay', function(ev) {
+                if (!streaming) {
+                    height = video.videoHeight / (video.videoWidth / width);
+
+                    if (isNaN(height)) {
+                        height = width / (4 / 3);
+                    }
+
+                    video.setAttribute('width', width);
+                    video.setAttribute('height', height);
+                    canvas.setAttribute('width', width);
+                    canvas.setAttribute('height', height);
+                    streaming = true;
+                }
+            }, false);
+
+            startbutton.addEventListener('click', function(ev) {
+                takepicture();
+                ev.preventDefault();
+            }, false);
+
+            clearphoto();
+        }
+
+
+
+        function clearphoto() {
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+        }
+
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            var input1=document.getElementById('photodata');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+
+                var data = canvas.toDataURL('image/png');
+                photo.setAttribute('src', data);
+                input1.setAttribute('value',data);
+            } else {
+                clearphoto();
+            }
+        }
+         
+
+        window.addEventListener('load', startup, false);
+    })();
+    </script>
+</body>
+
+</html>
